@@ -1,0 +1,15 @@
+groq
+redis
+langchain
+langchain-groq
+langchain-community
+langchain-text-splitters
+langchain-core
+langgraph
+faiss-cpu
+sentence-transformers
+faster-whisper
+sounddevice
+scipy
+pyttsx3
+pypdf

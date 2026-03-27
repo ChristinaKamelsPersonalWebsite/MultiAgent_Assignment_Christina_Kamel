@@ -1,0 +1,38 @@
+# This pipeline runs every time you push to GitHub
+name: Build and Push Docker Image
+
+# Trigger — runs on every push to master branch
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    # Run on GitHub's own Ubuntu machine
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — Get the latest code from GitHub
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2 — Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 3 — Build the Docker image from Dockerfile
+      - name: Build Docker image
+        run: docker build -t ghcr.io/christinakamelpersonalwebsite/multiagent_assignment_christina_kamel:latest .
+
+      # Step 4 — Push the image to GitHub Container Registry
+      - name: Push Docker image
+        run: docker push ghcr.io/christinakamelpersonalwebsite/multiagent_assignment_christina_kamel:latest
+
+      # Step 5 — Confirm deployment
+      - name: Done
+        run: echo "Docker image built and pushed successfully!"

@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - agent_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pv_agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pv_agent
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    volumes:
+      - ./data:/app/data
+    networks:
+      - agent_net
+    depends_on:
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+networks:
+  agent_net:
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local

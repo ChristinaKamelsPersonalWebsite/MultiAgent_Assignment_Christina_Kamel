@@ -1,0 +1,5 @@
+.venv
+__pycache__
+*.pyc
+*.pyo
+rag_manual_eval.csv

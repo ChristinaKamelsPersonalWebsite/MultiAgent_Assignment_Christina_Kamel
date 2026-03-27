@@ -1,0 +1,6 @@
+.venv 
+.env 
+__pycache__ 
+.vscode 
+rag_manual_eval.csv 
+data 
